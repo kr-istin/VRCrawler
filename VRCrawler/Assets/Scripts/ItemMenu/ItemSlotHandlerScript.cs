@@ -4,26 +4,36 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemSlotHandlerScript : MonoBehaviour {
-	public GameObject canvas;
+	public GameObject itemMenuPanel;
+    public GameObject canvas;
+    public GameObject canvasWhenGamePaused;
+    public GameObject cameraPlayer;
 	public GameObject [] itemSlots = new GameObject[6];
 	public GameObject [] itemSlotsObjects = new GameObject[6];
 	public int usedItemSlots;
 	// Use this for initialization
 	void Start () {
-		canvas.SetActive (false);
+        canvas = itemMenuPanel.transform.parent.gameObject;
+        cameraPlayer = canvas.transform.parent.gameObject;
+        canvasWhenGamePaused.transform.SetParent(cameraPlayer.transform);
+        itemMenuPanel.SetActive (false);
 		usedItemSlots = 0;
+
 	}
 
 	// Update is called once per frame
 	void Update () {
 		
 		if (Input.GetButton("Pause")) {
-			if (canvas.activeSelf) {
+			if (itemMenuPanel.activeSelf) {
+                canvas.transform.SetParent(cameraPlayer.transform);
+                
 				Time.timeScale = 1;
 			} else {
-				Time.timeScale = 0;
+                canvas.transform.SetParent(gameObject.transform);
+                Time.timeScale = 0;
 			}
-			canvas.SetActive(!canvas.activeSelf);
+			itemMenuPanel.SetActive(!itemMenuPanel.activeSelf);
 		}
 
 		if (Input.GetKeyDown (KeyCode.P)) {
