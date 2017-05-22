@@ -11,27 +11,52 @@ public class ItemSlotHandlerScript : MonoBehaviour {
 	public GameObject [] itemSlots = new GameObject[6];
 	public GameObject [] itemSlotsObjects = new GameObject[6];
 	public int usedItemSlots;
+	private float lastTime;
 	// Use this for initialization
 	void Start () {
+		lastTime = Time.realtimeSinceStartup;
         canvas = itemMenuPanel.transform.parent.gameObject;
         cameraPlayer = canvas.transform.parent.gameObject;
+        canvasWhenGamePaused = Instantiate<GameObject>(canvas);
         canvasWhenGamePaused.transform.SetParent(cameraPlayer.transform);
+        canvasWhenGamePaused.SetActive(false);
+        canvasWhenGamePaused.transform.position = canvas.transform.position;
+        canvasWhenGamePaused.transform.rotation = canvas.transform.rotation;
         itemMenuPanel.SetActive (false);
 		usedItemSlots = 0;
+
+		//VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_Pointer> ().enabled = false;
+		VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_StraightPointerRenderer> ().enabled = false;
 
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
+		float deltaTime = Time.realtimeSinceStartup - lastTime;
+		//ausführen mit deltatime
+
+		lastTime = Time.realtimeSinceStartup;
 		if (Input.GetButton("Pause")) {
 			if (itemMenuPanel.activeSelf) {
+				//Time.timeScale = 1;
+				//VRTK.VRTK_SDKManager.instance.scriptAliasLeftController.GetComponent<VRTK.VRTK_Pointer> ().enabled = true;
+				VRTK.VRTK_SDKManager.instance.scriptAliasLeftController.GetComponent<VRTK.VRTK_Pointer> ().enableTeleport = true;
+				//VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_Pointer> ().enabled = false;
+				VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_StraightPointerRenderer> ().enabled = false;
+                canvas.transform.position = canvasWhenGamePaused.transform.position;
+                canvas.transform.rotation = canvasWhenGamePaused.transform.rotation;
                 canvas.transform.SetParent(cameraPlayer.transform);
-                
-				Time.timeScale = 1;
+
 			} else {
+				//Time.timeScale = 0;
+				//VRTK.VRTK_SDKManager.instance.scriptAliasLeftController.GetComponent<VRTK.VRTK_Pointer> ().enabled = false;
+				VRTK.VRTK_SDKManager.instance.scriptAliasLeftController.GetComponent<VRTK.VRTK_Pointer> ().enableTeleport = false;
+				//VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_Pointer> ().enabled = true;
+				VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_StraightPointerRenderer> ().enabled = true;
+                canvasWhenGamePaused.transform.position = canvas.transform.position;
+                canvasWhenGamePaused.transform.rotation = canvas.transform.rotation;
                 canvas.transform.SetParent(gameObject.transform);
-                Time.timeScale = 0;
+               
 			}
 			itemMenuPanel.SetActive(!itemMenuPanel.activeSelf);
 		}
