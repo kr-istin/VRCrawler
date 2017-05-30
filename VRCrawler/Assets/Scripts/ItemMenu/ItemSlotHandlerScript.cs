@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ItemSlotHandlerScript : MonoBehaviour {
 	public GameObject cameraPlayer;
 	public GameObject canvas;
+	public GameObject canvasParent;
 	public GameObject itemMenuPanel;
     public GameObject canvasWhenGamePaused;
 	public GameObject [] itemSlots = new GameObject[6];
@@ -18,12 +19,14 @@ public class ItemSlotHandlerScript : MonoBehaviour {
 	void Start () {
 //		lastTime = Time.realtimeSinceStartup;
 		cameraPlayer = VRTK.VRTK_SDKManager.instance.actualBoundaries.gameObject;
-		canvas = cameraPlayer.transform.FindChild("Canvas").gameObject;
+		canvas = cameraPlayer.transform.FindChild ("Camera (eye)").FindChild ("Canvas").gameObject;
+		canvasParent = canvas.transform.parent.gameObject;
+		//canvas = cameraPlayer.transform.FindChild("Canvas").gameObject;
 		itemMenuPanel = canvas.transform.FindChild ("ItemMenuPanel").gameObject;
 		itemMenuPanel.SetActive (false);
 
         canvasWhenGamePaused = Instantiate<GameObject>(canvas);
-        canvasWhenGamePaused.transform.SetParent(cameraPlayer.transform);
+		canvasWhenGamePaused.transform.SetParent(gameObject.transform);
         canvasWhenGamePaused.SetActive(false);
         canvasWhenGamePaused.transform.position = canvas.transform.position;
         canvasWhenGamePaused.transform.rotation = canvas.transform.rotation;
@@ -85,7 +88,7 @@ public class ItemSlotHandlerScript : MonoBehaviour {
 			VRTK.VRTK_SDKManager.instance.scriptAliasRightController.GetComponent<VRTK.VRTK_StraightPointerRenderer> ().enabled = false;
 			canvas.transform.position = canvasWhenGamePaused.transform.position;
 			canvas.transform.rotation = canvasWhenGamePaused.transform.rotation;
-			canvas.transform.SetParent(cameraPlayer.transform);
+			canvas.transform.SetParent(canvasParent.transform);
 
 		} else {
 			//Time.timeScale = 0;
