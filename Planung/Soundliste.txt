@@ -1,0 +1,14 @@
+Benötigte Sounds:
+
+Hintergrundmusik
+Schwert schwingen
+laufen/schritte
+Feuerflackern
+Truhe öffnen
+Schloss öffnen
+Gegner angriff
+Gegner schlag
+Gegner schlagen
+Todesgeräusch? schrei? dramatische Musik?
+Gegner stirbt
+gegen Objekte laufen
