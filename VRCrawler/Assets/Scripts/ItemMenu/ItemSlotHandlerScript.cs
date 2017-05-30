@@ -26,7 +26,7 @@ public class ItemSlotHandlerScript : MonoBehaviour {
 		itemMenuPanel.SetActive (false);
 
         canvasWhenGamePaused = Instantiate<GameObject>(canvas);
-		canvasWhenGamePaused.transform.SetParent(gameObject.transform);
+		canvasWhenGamePaused.transform.SetParent(canvasParent.transform);
         canvasWhenGamePaused.SetActive(false);
         canvasWhenGamePaused.transform.position = canvas.transform.position;
         canvasWhenGamePaused.transform.rotation = canvas.transform.rotation;
